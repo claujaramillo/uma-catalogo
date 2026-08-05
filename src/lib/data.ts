@@ -324,8 +324,8 @@ export const products: Product[] = [
     image_url: '/productos/roll-on-sana.jpg',
     images: [],
     tags: ['natural', 'eco-friendly', 'aromaterapia'],
-    image_fit: 'contain',
-    image_position: 'center bottom',
+    image_fit: 'cover',
+    image_position: 'center center',
     is_featured: false, is_available: true, sort_order: 25,
   },
   {
