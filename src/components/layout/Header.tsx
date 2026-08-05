@@ -76,11 +76,11 @@ export default function Header() {
               <div style={{ position: 'absolute', top: '100%', left: '-1rem', paddingTop: '0.5rem' }}>
                 <div style={{
                   background: 'var(--uma-marfil)',
-                  border: '1px solid var(--uma-arena)',
-                  borderRadius: '4px',
-                  padding: '0.5rem 0',
-                  minWidth: '220px',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                  border: '1px solid rgba(220,200,173,0.3)',
+                  borderRadius: '2px',
+                  padding: '1rem 0',
+                  minWidth: '240px',
+                  boxShadow: '0 10px 40px rgba(58,40,29,0.08)',
                   display: 'flex', flexDirection: 'column',
                 }}>
                   <Link href="/catalogo" style={{ padding: '0.6rem 1.2rem', fontSize: '0.85rem', color: 'var(--uma-cacao)', textDecoration: 'none' }}>

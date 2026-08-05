@@ -8,18 +8,25 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const position = product.image_position || 'center center';
+
   return (
-    <Link href={`/catalogo/${product.slug}`} style={{ textDecoration: 'none', display: 'block', height: '100%' }}>
-      <article className="product-card">
+    <article className="product-card">
+      <Link href={`/catalogo/${product.slug}`} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', height: '100%' }}>
         {/* Image */}
         <div className="product-card__img-wrap">
           <Image
             src={product.image_url}
             alt={product.name}
             width={400}
-            height={533}
+            height={400}
             className="product-card__img"
-            style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+            style={{ 
+              objectFit: 'cover', 
+              objectPosition: position, 
+              width: '100%', 
+              height: '100%' 
+            }}
           />
 
           {/* Out of stock overlay */}
@@ -60,6 +67,10 @@ export default function ProductCard({ product }: ProductCardProps) {
             color: 'var(--uma-cacao)',
             marginBottom: '0.4rem',
             lineHeight: 1.3,
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
           }}>
             {product.name}
           </h3>
@@ -105,7 +116,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             </span>
           </div>
         </div>
-      </article>
-    </Link>
+      </Link>
+    </article>
   );
 }

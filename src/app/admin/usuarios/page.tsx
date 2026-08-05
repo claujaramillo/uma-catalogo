@@ -15,7 +15,7 @@ export default async function UsersPage() {
         <div style={{ background: '#FFF3CD', border: '1px solid #FFEEBA', padding: '1.5rem', borderRadius: '4px', marginBottom: '2rem', color: '#856404' }}>
           <h3 style={{ marginBottom: '0.5rem', fontWeight: 600 }}>Base de datos no conectada</h3>
           <p style={{ fontSize: '0.9rem' }}>
-            Las funciones de usuarios requieren una base de datos real. Por ahora, solo puedes acceder con "admin" y la contraseña por defecto.
+            Las funciones de usuarios requieren una base de datos real. Por ahora, solo puedes acceder con &quot;admin&quot; y la contraseña por defecto.
           </p>
         </div>
       )}

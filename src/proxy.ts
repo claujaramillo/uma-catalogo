@@ -6,7 +6,7 @@ const SECRET_KEY = new TextEncoder().encode(
   process.env.JWT_SECRET || 'fallback_secret_key_for_uma_catalog_dev_only'
 );
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   // Ignorar peticiones a la ruta de login para no hacer un loop
   if (req.nextUrl.pathname === '/admin/login') {
     return NextResponse.next();
@@ -23,7 +23,7 @@ export async function middleware(req: NextRequest) {
       // Verificar el token JWT (compatible con Edge Runtime)
       await jwtVerify(sessionCookie, SECRET_KEY);
       return NextResponse.next();
-    } catch (error) {
+    } catch {
       // Si el token expira o es inválido, redirigir al login
       return NextResponse.redirect(new URL('/admin/login', req.url));
     }

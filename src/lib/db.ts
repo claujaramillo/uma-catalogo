@@ -105,7 +105,7 @@ export async function getUserByUsername(username: string): Promise<User | null> 
   try {
     const { rows } = await sql`SELECT * FROM users WHERE username = ${username};`;
     return rows[0] as User || null;
-  } catch (e) {
+  } catch {
     return null;
   }
 }
@@ -115,7 +115,7 @@ export async function getAllUsers(): Promise<User[]> {
   try {
     const { rows } = await sql`SELECT id, username, password_hash FROM users ORDER BY username ASC;`;
     return rows as User[];
-  } catch (e) {
+  } catch {
     return [];
   }
 }
@@ -155,7 +155,7 @@ export async function getSetting(key: string, defaultValue: string): Promise<str
   try {
     const { rows } = await sql`SELECT value FROM settings WHERE key = ${key};`;
     return rows[0]?.value || defaultValue;
-  } catch (error) {
+  } catch {
     return defaultValue;
   }
 }
@@ -216,7 +216,7 @@ export async function getProductById(id: string): Promise<Product | null> {
       id: rows[0].id.toString(),
       price: parseFloat(rows[0].price)
     } as Product;
-  } catch (error) {
+  } catch {
     return staticProducts.find(p => p.id === id) || null;
   }
 }
@@ -232,7 +232,7 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
       id: rows[0].id.toString(),
       price: parseFloat(rows[0].price)
     } as Product;
-  } catch (error) {
+  } catch {
     return staticProducts.find(p => p.slug === slug) || null;
   }
 }

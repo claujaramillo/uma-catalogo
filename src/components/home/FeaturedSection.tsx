@@ -35,12 +35,7 @@ export default function FeaturedSection({ products }: FeaturedSectionProps) {
         </div>
 
         {/* Grid */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
-          gap: '1.5rem',
-          marginBottom: '2.5rem',
-        }}>
+        <div className="product-grid" style={{ marginBottom: '2.5rem' }}>
           {products.slice(0, 6).map(product => (
             <ProductCard key={product.id} product={product} />
           ))}

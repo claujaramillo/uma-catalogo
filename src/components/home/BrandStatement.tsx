@@ -39,7 +39,7 @@ export default function BrandStatement() {
               paddingLeft: '1.5rem',
               borderLeft: '3px solid var(--uma-arcilla)',
             }}>
-              "Cada producto que eliges es una decisión pequeña con un impacto enorme."
+              &quot;Cada producto que eliges es una decisión pequeña con un impacto enorme.&quot;
             </blockquote>
             <p style={{
               fontFamily: 'var(--font-body)', fontSize: '0.875rem',
@@ -55,32 +55,23 @@ export default function BrandStatement() {
           <div style={{
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
-            gap: '1.5rem',
+            gap: '2.5rem 1.5rem',
           }}>
-            {values.map(v => (
+            {values.map((v, idx) => (
               <div key={v.title} style={{
-                background: 'white',
-                borderRadius: '4px',
-                padding: '1.5rem',
-                border: '1px solid rgba(220,200,173,0.4)',
-                transition: 'transform 0.25s ease, box-shadow 0.25s ease',
-              }}
-                onMouseEnter={e => {
-                  (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-4px)';
-                  (e.currentTarget as HTMLDivElement).style.boxShadow = '0 8px 24px rgba(58,40,29,0.08)';
-                }}
-                onMouseLeave={e => {
-                  (e.currentTarget as HTMLDivElement).style.transform = 'none';
-                  (e.currentTarget as HTMLDivElement).style.boxShadow = 'none';
-                }}
-              >
-                <h3 style={{
-                  fontFamily: 'var(--font-heading)', fontSize: '1.1rem',
-                  fontWeight: 600, color: 'var(--uma-cacao)', marginBottom: '0.4rem',
-                }}>
-                  {v.title}
-                </h3>
-                <p style={{ fontSize: '0.82rem', color: 'var(--uma-taupe)', lineHeight: 1.6 }}>
+                paddingTop: '1.5rem',
+                borderTop: '1px solid rgba(220,200,173,0.5)',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                  <span style={{ fontSize: '0.7rem', color: 'var(--uma-arcilla)', fontWeight: 600 }}>0{idx + 1}</span>
+                  <h3 style={{
+                    fontFamily: 'var(--font-heading)', fontSize: '1.25rem',
+                    fontWeight: 500, color: 'var(--uma-cacao)', margin: 0,
+                  }}>
+                    {v.title}
+                  </h3>
+                </div>
+                <p style={{ fontSize: '0.85rem', color: 'var(--uma-taupe)', lineHeight: 1.7, margin: 0 }}>
                   {v.desc}
                 </p>
               </div>

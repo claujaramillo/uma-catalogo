@@ -23,6 +23,8 @@ export interface Product {
   image_url: string;
   images?: string[];
   tags: string[];
+  image_fit?: 'cover' | 'contain';
+  image_position?: string;
   is_featured: boolean;
   is_available: boolean;
   sort_order: number;

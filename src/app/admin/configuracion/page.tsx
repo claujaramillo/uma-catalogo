@@ -42,7 +42,7 @@ export default async function ConfigPage() {
       <div style={{ background: 'white', padding: '2.5rem', borderRadius: '4px', border: '1px solid var(--uma-arena)', maxWidth: '600px' }}>
         <h2 style={{ fontSize: '1.2rem', color: 'var(--uma-cacao)', marginBottom: '1.5rem', fontWeight: 600 }}>Número de Contacto (WhatsApp)</h2>
         <p style={{ fontSize: '0.9rem', color: 'var(--uma-taupe)', marginBottom: '2rem', lineHeight: 1.6 }}>
-          Este es el número al que llegarán todos los pedidos cuando los clientes hagan clic en "Pedir por WhatsApp". 
+          Este es el número al que llegarán todos los pedidos cuando los clientes hagan clic en &quot;Pedir por WhatsApp&quot;.
           Asegúrate de incluir el código de país sin el símbolo + (ejemplo: 573101234567 para Colombia).
         </p>
 

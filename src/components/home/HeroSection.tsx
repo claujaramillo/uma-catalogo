@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { getSetting } from '@/lib/db';
 
 export default async function HeroSection() {
@@ -27,7 +26,7 @@ export default async function HeroSection() {
       {/* Subtle dark gradient overlay for text readability */}
       <div style={{
         position: 'absolute', inset: 0,
-        background: 'linear-gradient(to bottom, rgba(58,40,29,0.1) 0%, rgba(58,40,29,0.7) 100%)',
+        background: 'linear-gradient(to bottom, rgba(58,40,29,0.15) 0%, rgba(58,40,29,0.4) 40%, rgba(58,40,29,0.85) 100%)',
       }} />
 
 
@@ -58,15 +57,16 @@ export default async function HeroSection() {
           style={{
             fontFamily: 'var(--font-heading)',
             fontSize: 'clamp(2.4rem, 6vw, 4.5rem)',
-            fontWeight: 600,
+            fontWeight: 500,
             color: 'var(--uma-marfil)',
             lineHeight: 1.15,
             maxWidth: '700px',
             margin: '0 auto 1.5rem',
+            letterSpacing: '-0.02em',
           }}
         >
           Lo que le das a tu cuerpo,<br />
-          <em style={{ color: 'var(--uma-ambar)', fontStyle: 'normal' }}>se lo das al mundo.</em>
+          <em style={{ color: 'var(--uma-ambar)', fontStyle: 'italic', fontWeight: 400 }}>se lo das al mundo.</em>
         </h1>
 
         {/* Subtitle */}
@@ -90,7 +90,7 @@ export default async function HeroSection() {
             Explorar catálogo
           </Link>
           <Link
-            href="/catalogo#destacados"
+            href="#destacados"
             style={{
               display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
               color: 'rgba(250,245,236,0.8)', fontFamily: 'var(--font-body)',

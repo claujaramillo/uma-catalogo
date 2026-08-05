@@ -41,6 +41,9 @@ export default async function ProductPage({ params }: PageProps) {
     .filter(p => p.category_id === product.category_id && p.id !== product.id && p.is_available)
     .slice(0, 3);
 
+  const fit = product.image_fit || (product.tags.includes('no-crop') ? 'contain' : 'cover');
+  const position = product.image_position || 'center center';
+
   return (
     <>
       <Header />
@@ -73,14 +76,18 @@ export default async function ProductPage({ params }: PageProps) {
                   borderRadius: '4px',
                   overflow: 'hidden',
                   background: 'var(--uma-crema)',
-                  aspectRatio: '3/4',
+                  aspectRatio: '1/1',
                   position: 'relative',
                 }}>
                   <Image
                     src={product.image_url}
                     alt={product.name}
                     fill
-                    style={{ objectFit: 'cover' }}
+                    style={{ 
+                      objectFit: fit, 
+                      objectPosition: position,
+                      padding: '0'
+                    }}
                     priority
                     sizes="(max-width: 768px) 100vw, 50vw"
                   />
@@ -117,17 +124,24 @@ export default async function ProductPage({ params }: PageProps) {
                 </h1>
 
                 {/* Price */}
-                <div style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
+                <div style={{ 
+                  marginBottom: '2rem', 
+                  display: 'flex', 
+                  alignItems: 'baseline', 
+                  gap: '0.5rem',
+                  borderBottom: '1px solid rgba(220,200,173,0.3)',
+                  paddingBottom: '1.5rem'
+                }}>
                   <span style={{
                     fontFamily: 'var(--font-heading)',
                     fontSize: '1.8rem',
-                    fontWeight: 700,
+                    fontWeight: 600,
                     color: 'var(--uma-cacao)',
                   }}>
                     {formatPrice(product.price)}
                   </span>
                   {product.price_label && (
-                    <span style={{ color: 'var(--uma-taupe)', fontSize: '0.9rem' }}>
+                    <span style={{ color: 'var(--uma-taupe)', fontSize: '0.9rem', letterSpacing: '0.02em' }}>
                       {product.price_label}
                     </span>
                   )}
@@ -164,19 +178,17 @@ export default async function ProductPage({ params }: PageProps) {
                 {/* Ingredients */}
                 {product.ingredients && (
                   <div style={{
-                    marginBottom: '1.5rem',
-                    padding: '1.2rem',
-                    background: 'var(--uma-crema)',
-                    borderRadius: '4px',
-                    borderLeft: '3px solid var(--uma-arcilla)',
+                    marginBottom: '2rem',
+                    paddingTop: '1.5rem',
+                    borderTop: '1px solid rgba(220,200,173,0.3)',
                   }}>
                     <p style={{
-                      fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.12em',
-                      textTransform: 'uppercase', color: 'var(--uma-arcilla)', marginBottom: '0.5rem',
+                      fontSize: '0.72rem', fontWeight: 600, letterSpacing: '0.12em',
+                      textTransform: 'uppercase', color: 'var(--uma-arcilla)', marginBottom: '0.8rem',
                     }}>
                       Ingredientes
                     </p>
-                    <p style={{ fontSize: '0.85rem', color: 'var(--uma-taupe)', lineHeight: 1.7 }}>
+                    <p style={{ fontSize: '0.9rem', color: 'var(--uma-taupe)', lineHeight: 1.8 }}>
                       {product.ingredients}
                     </p>
                   </div>
@@ -236,24 +248,22 @@ export default async function ProductPage({ params }: PageProps) {
               }}>
                 También te puede interesar
               </h2>
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
-                gap: '1.5rem',
-              }}>
-                {related.map(p => (
+              <div className="product-grid">
+                {related.map(p => {
+                  const pPosition = p.image_position || 'center center';
+                  return (
                   <Link key={p.id} href={`/catalogo/${p.slug}`} style={{ textDecoration: 'none' }}>
                     <article className="product-card">
                       <div className="product-card__img-wrap">
-                        <Image src={p.image_url} alt={p.name} width={300} height={400} className="product-card__img" style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
+                        <Image src={p.image_url} alt={p.name} width={400} height={400} className="product-card__img" style={{ objectFit: 'cover', objectPosition: pPosition, width: '100%', height: '100%' }} />
                       </div>
                       <div className="product-card__body">
-                        <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '0.95rem', color: 'var(--uma-cacao)', marginBottom: '0.4rem' }}>{p.name}</h3>
-                        <span style={{ fontFamily: 'var(--font-heading)', fontSize: '1rem', fontWeight: 600, color: 'var(--uma-cacao)' }}>{formatPrice(p.price)}</span>
+                        <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '0.95rem', color: 'var(--uma-cacao)', marginBottom: '0.4rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{p.name}</h3>
+                        <span style={{ fontFamily: 'var(--font-heading)', fontSize: '1rem', fontWeight: 500, color: 'var(--uma-cacao)' }}>{formatPrice(p.price)}</span>
                       </div>
                     </article>
                   </Link>
-                ))}
+                )})}
               </div>
             </div>
           </div>

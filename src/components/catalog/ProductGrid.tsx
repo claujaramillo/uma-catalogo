@@ -1,8 +1,8 @@
 'use client';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ProductCard from './ProductCard';
-import { Product, Category } from '@/types';
+import { Product } from '@/types';
 import { categories } from '@/lib/data';
 
 interface ProductGridProps {
@@ -21,17 +21,18 @@ export default function ProductGrid({
   const searchParams = useSearchParams();
   const urlCategory = searchParams.get('categoria');
   
-  const [activeCategory, setActiveCategory] = useState(initialCategory);
+  const [activeCategory, setActiveCategory] = useState(urlCategory || initialCategory);
+  const [prevUrlCategory, setPrevUrlCategory] = useState(urlCategory);
   const [searchQuery, setSearchQuery] = useState('');
   type SortOption = 'destacados' | 'precio-asc' | 'precio-desc' | 'nombre-asc';
   const [sortOption, setSortOption] = useState<SortOption>('destacados');
 
-  // Sync state with URL category if present
-  useEffect(() => {
+  if (urlCategory !== prevUrlCategory) {
+    setPrevUrlCategory(urlCategory);
     if (urlCategory) {
       setActiveCategory(urlCategory);
     }
-  }, [urlCategory]);
+  }
 
   const filtered = useMemo(() => {
     let result = products.filter(p => p.is_available);
@@ -220,11 +221,7 @@ export default function ProductGrid({
           </button>
         </div>
       ) : (
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
-          gap: '1.75rem',
-        }}>
+        <div className="product-grid" style={{ marginBottom: '3rem' }}>
           {filtered.map(product => (
             <ProductCard key={product.id} product={product} />
           ))}
