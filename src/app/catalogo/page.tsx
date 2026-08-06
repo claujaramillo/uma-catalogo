@@ -13,7 +13,8 @@ export const metadata: Metadata = {
 export default async function CatalogoPage() {
   const products = await getProducts();
   const bgImage = await getSetting('catalog_hero_image', '/hero_uma2.jpg');
-  
+  const focalPoint = await getSetting('catalog_hero_focal', '50% 50%');
+
   return (
     <>
       <Header />
@@ -31,23 +32,30 @@ export default async function CatalogoPage() {
             position: 'absolute', inset: 0,
             backgroundImage: `url(${bgImage})`,
             backgroundSize: 'cover',
-            backgroundPosition: 'center',
+            backgroundPosition: focalPoint,
           }} />
 
           {/* Suble overlay for readability */}
           <div style={{
             position: 'absolute', inset: 0,
-            background: 'linear-gradient(to bottom, rgba(58,40,29,0.3) 0%, rgba(58,40,29,0.7) 100%)',
+            background: 'linear-gradient(to bottom, rgba(43,26,23,0.4) 0%, rgba(43,26,23,0.8) 100%)',
           }} />
 
           <div className="container-uma" style={{ position: 'relative', zIndex: 2 }}>
-            <p style={{
-              fontFamily: 'var(--font-body)', fontSize: '0.72rem', fontWeight: 700,
-              letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--uma-ambar)',
-              marginBottom: '0.75rem',
+            <span style={{
+              display: 'inline-block',
+              fontFamily: 'var(--font-body)', fontSize: '0.75rem', fontWeight: 600,
+              letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--uma-marfil)',
+              background: 'rgba(43, 26, 23, 0.45)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
+              border: '1px solid rgba(252, 251, 248, 0.12)',
+              padding: '0.4rem 1rem',
+              borderRadius: '20px',
+              marginBottom: '1.2rem',
             }}>
-              Productos naturales
-            </p>
+              Productos Naturales
+            </span>
             <h1 style={{
               fontFamily: 'var(--font-heading)',
               fontSize: 'clamp(2rem, 5vw, 3.5rem)',

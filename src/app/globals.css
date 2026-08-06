@@ -2,15 +2,16 @@
 
 /* ─── UMA Design Tokens ─────────────────────────────── */
 :root {
-  /* Paleta UMA */
-  --uma-crema:      #F3E8D8;
-  --uma-arena:      #DCC8AD;
-  --uma-arcilla:    #B98A62;
-  --uma-ambar:      #D8A15F;
-  --uma-taupe:      #8C715D;
-  --uma-cacao:      #3A281D;
-  --uma-salvia:     #7A7B5A;
-  --uma-marfil:     #FAF5EC;
+  /* Paleta UMA - Premium Editorial */
+  --uma-blanco:     #FFFFFF;
+  --uma-marfil:     #FCFBF8;
+  --uma-crema:      #F5EFE6;
+  --uma-arena:      #D8CEC2;
+  --uma-arcilla:    #3A2422;
+  --uma-taupe:      #7F7168;
+  --uma-cacao:      #2B1A17;
+  --uma-salvia:     #8A8D6F;
+  --uma-miel:       #C49A45;
 
   /* Tipografías */
   --font-heading:   var(--font-playfair), Georgia, serif;
@@ -27,12 +28,42 @@ html { scroll-behavior: smooth; }
 
 body {
   font-family: var(--font-body);
-  background-color: var(--uma-marfil);
+  background-color: var(--uma-crema);
   color: var(--uma-cacao);
   line-height: 1.75;
   letter-spacing: 0.01em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Enlaces y Focus ────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--uma-miel);
+  outline-offset: 4px;
+}
+
+.link-editorial {
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.3s ease;
+}
+.link-editorial::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 1px;
+  bottom: -2px;
+  left: 0;
+  background-color: currentColor;
+  transform-origin: bottom right;
+  transition: transform 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.link-editorial:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
 }
 
 /* ─── Tipografía ─────────────────────────────────────── */
@@ -46,14 +77,15 @@ h1, h2, h3, h4 {
 
 /* ─── Tailwind Custom Theme Extension ───────────────── */
 @theme {
-  --color-crema:   #F3E8D8;
-  --color-arena:   #DCC8AD;
-  --color-arcilla: #B98A62;
-  --color-ambar:   #D8A15F;
-  --color-taupe:   #8C715D;
-  --color-cacao:   #3A281D;
-  --color-salvia:  #7A7B5A;
-  --color-marfil:  #FAF5EC;
+  --color-blanco:  #FFFFFF;
+  --color-marfil:  #FCFBF8;
+  --color-crema:   #F5EFE6;
+  --color-arena:   #D8CEC2;
+  --color-arcilla: #3A2422;
+  --color-taupe:   #7F7168;
+  --color-cacao:   #2B1A17;
+  --color-salvia:  #8A8D6F;
+  --color-miel:    #C49A45;
 
   --font-heading:  var(--font-playfair), Georgia, serif;
   --font-sans:     var(--font-opensans), system-ui, sans-serif;
@@ -82,21 +114,21 @@ h1, h2, h3, h4 {
   background-color: var(--uma-cacao);
   color: var(--uma-marfil);
   font-family: var(--font-body);
-  font-weight: 500;
-  font-size: 0.9rem;
-  letter-spacing: 0.05em;
+  font-weight: 400;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 0.8rem 1.8rem;
-  border-radius: 2px;
+  padding: 0.9rem 2.2rem;
+  border-radius: 9999px;
   border: none;
   cursor: pointer;
   transition: background-color 0.25s ease, transform 0.15s ease, box-shadow 0.25s ease;
   text-decoration: none;
 }
 .btn-primary:hover {
-  background-color: #231211;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(53, 28, 26, 0.25);
+  background-color: #1F1311;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(43, 26, 23, 0.2);
 }
 .btn-primary:active { transform: translateY(0); }
 
@@ -107,12 +139,12 @@ h1, h2, h3, h4 {
   background: transparent;
   color: var(--uma-cacao);
   font-family: var(--font-body);
-  font-weight: 500;
-  font-size: 0.9rem;
-  letter-spacing: 0.05em;
+  font-weight: 400;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 0.75rem 1.8rem;
-  border-radius: 2px;
+  padding: 0.85rem 2.1rem;
+  border-radius: 9999px;
   border: 1.5px solid var(--uma-cacao);
   cursor: pointer;
   transition: all 0.25s ease;
@@ -121,6 +153,8 @@ h1, h2, h3, h4 {
 .btn-outline:hover {
   background-color: var(--uma-cacao);
   color: var(--uma-marfil);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(43, 26, 23, 0.12);
 }
 
 .btn-whatsapp {
@@ -131,11 +165,11 @@ h1, h2, h3, h4 {
   color: #ffffff;
   font-family: var(--font-body);
   font-weight: 500;
-  font-size: 0.95rem;
-  letter-spacing: 0.04em;
+  font-size: 0.9rem;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  padding: 1rem 2rem;
-  border-radius: 4px;
+  padding: 1.1rem 2.2rem;
+  border-radius: 9999px;
   border: none;
   cursor: pointer;
   transition: background-color 0.4s ease, transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
@@ -144,9 +178,9 @@ h1, h2, h3, h4 {
   justify-content: center;
 }
 .btn-whatsapp:hover {
-  background-color: #261810;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(58, 40, 29, 0.15);
+  background-color: #1F1311;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(43, 26, 23, 0.2);
 }
 
 /* ─── Inputs de Archivo (Fotos) ──────────────────────── */
@@ -178,17 +212,33 @@ input[type="file"]::file-selector-button:hover {
 
 /* ─── Cards ──────────────────────────────────────────── */
 .product-card {
-  background: transparent;
-  border-radius: 0;
+  background: var(--uma-blanco);
+  border-radius: 6px;
   overflow: hidden;
   cursor: pointer;
-  border: none;
+  border: 1px solid rgba(58, 36, 34, 0.08);
+  box-shadow: 0 4px 12px rgba(58, 36, 34, 0.03);
   display: flex;
   flex-direction: column;
   height: 100%;
+  transition: box-shadow 0.35s ease, border-color 0.35s ease, transform 0.35s ease;
+}
+.product-card:hover {
+  box-shadow: 0 8px 24px rgba(58, 36, 34, 0.08);
+  border-color: rgba(58, 36, 34, 0.15);
+  transform: translateY(-2px);
 }
 .product-card:hover .product-card__img {
-  transform: scale(1.03);
+  transform: scale(1.05);
+}
+.product-card:hover .card-cta-text {
+  transform: translateX(4px);
+  color: var(--uma-cacao);
+}
+
+.card-cta-text {
+  transition: transform 0.3s ease, color 0.3s ease;
+  display: inline-block;
 }
 
 .product-card__img-wrap {
@@ -196,7 +246,7 @@ input[type="file"]::file-selector-button:hover {
   aspect-ratio: 1/1;
   background: var(--uma-crema);
   padding: 0;
-  border-radius: 2px;
+  border-radius: 6px 6px 0 0;
 }
 .product-card__img {
   width: 100%;
@@ -204,7 +254,7 @@ input[type="file"]::file-selector-button:hover {
   transition: transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 .product-card__body {
-  padding: 1.2rem 0.5rem 1.4rem;
+  padding: 1.5rem 1.2rem 1.6rem;
   display: flex;
   flex-direction: column;
   flex-grow: 1;

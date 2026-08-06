@@ -2,13 +2,68 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Product } from '@/types';
 import { formatPrice } from '@/lib/data';
+import { stripEmojis } from '@/lib/utils';
 
 interface ProductCardProps {
   product: Product;
+  viewMode?: 'grid' | 'list';
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
   const position = product.image_position || 'center center';
+
+  if (viewMode === 'list') {
+    return (
+      <article className="product-card list-view" style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Link href={`/catalogo/${product.slug}`} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'row', width: '100%', alignItems: 'stretch' }}>
+          {/* Image */}
+          <div className="product-card__img-wrap" style={{ width: '140px', minWidth: '140px', borderRadius: '6px 0 0 6px', borderRight: '1px solid rgba(58, 36, 34, 0.04)' }}>
+            <Image
+              src={product.image_url}
+              alt={product.name}
+              width={140}
+              height={140}
+              className="product-card__img"
+              style={{ objectFit: 'cover', objectPosition: position, width: '100%', height: '100%' }}
+            />
+            {!product.is_available && (
+              <div style={{ position: 'absolute', inset: 0, background: 'rgba(250,245,236,0.75)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ color: 'var(--uma-taupe)', fontWeight: 600, fontSize: '0.65rem', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Sin stock</span>
+              </div>
+            )}
+          </div>
+
+          {/* Body */}
+          <div className="product-card__body" style={{ padding: '1rem 1.5rem', display: 'flex', flexDirection: 'column', flexGrow: 1, justifyContent: 'center' }}>
+            {product.brand && (
+              <p style={{ fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--uma-arcilla)', marginBottom: '0.2rem' }}>
+                {product.brand}
+              </p>
+            )}
+            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 500, color: 'var(--uma-cacao)', marginBottom: '0.2rem' }}>
+              {stripEmojis(product.name)}
+            </h3>
+            <p style={{ fontSize: '0.8rem', color: 'var(--uma-taupe)', lineHeight: 1.5, marginBottom: '0.8rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+              {stripEmojis(product.short_desc)}
+            </p>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto' }}>
+              <div>
+                <span style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 600, color: 'var(--uma-cacao)' }}>
+                  {formatPrice(product.price)}
+                </span>
+                {product.price_label && (
+                  <span style={{ fontSize: '0.75rem', color: 'var(--uma-taupe)', marginLeft: '0.25rem' }}>{product.price_label}</span>
+                )}
+              </div>
+              <span className="card-cta-text" style={{ fontSize: '0.75rem', color: 'var(--uma-arcilla)', fontWeight: 500, letterSpacing: '0.03em' }}>
+                Ver →
+              </span>
+            </div>
+          </div>
+        </Link>
+      </article>
+    );
+  }
 
   return (
     <article className="product-card">
@@ -72,7 +127,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             WebkitBoxOrient: 'vertical',
             overflow: 'hidden',
           }}>
-            {product.name}
+            {stripEmojis(product.name)}
           </h3>
 
           {/* Short desc */}
@@ -86,7 +141,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             WebkitBoxOrient: 'vertical',
             overflow: 'hidden',
           }}>
-            {product.short_desc}
+            {stripEmojis(product.short_desc)}
           </p>
 
           {/* Price row */}
@@ -106,7 +161,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 </span>
               )}
             </div>
-            <span style={{
+            <span className="card-cta-text" style={{
               fontSize: '0.75rem',
               color: 'var(--uma-arcilla)',
               fontWeight: 500,

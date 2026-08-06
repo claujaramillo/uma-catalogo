@@ -6,6 +6,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { getCategoryById, formatPrice, generateWhatsAppUrl } from '@/lib/data';
 import { getProductBySlug, getProducts, getWhatsAppNumber } from '@/lib/db';
+import { stripEmojis } from '@/lib/utils';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -21,8 +22,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const product = await getProductBySlug(slug);
   if (!product) return { title: 'Producto no encontrado — UMA' };
   return {
-    title: `${product.name} — UMA Mercado Consciente`,
-    description: product.short_desc,
+    title: `${stripEmojis(product.name)} — UMA Mercado Consciente`,
+    description: stripEmojis(product.short_desc),
   };
 }
 
@@ -52,11 +53,11 @@ export default async function ProductPage({ params }: PageProps) {
         <div style={{ background: 'var(--uma-crema)', borderBottom: '1px solid var(--uma-arena)' }}>
           <div className="container-uma" style={{ paddingBlock: '0.75rem' }}>
             <nav style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', fontSize: '0.8rem', color: 'var(--uma-taupe)' }}>
-              <Link href="/" style={{ color: 'var(--uma-taupe)', textDecoration: 'none' }}>Inicio</Link>
+              <Link href="/" className="link-editorial" style={{ color: 'var(--uma-taupe)', textDecoration: 'none' }}>Inicio</Link>
               <span>/</span>
-              <Link href="/catalogo" style={{ color: 'var(--uma-taupe)', textDecoration: 'none' }}>Catálogo</Link>
+              <Link href="/catalogo" className="link-editorial" style={{ color: 'var(--uma-taupe)', textDecoration: 'none' }}>Catálogo</Link>
               <span>/</span>
-              <span style={{ color: 'var(--uma-arcilla)' }}>{product.name}</span>
+              <span style={{ color: 'var(--uma-arcilla)' }}>{stripEmojis(product.name)}</span>
             </nav>
           </div>
         </div>
@@ -101,7 +102,7 @@ export default async function ProductPage({ params }: PageProps) {
                 <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', marginBottom: '0.75rem', flexWrap: 'wrap' }}>
                   {category && (
                     <span className="tag-badge">
-                      {category.icon} {category.name}
+                      {stripEmojis(category.name)}
                     </span>
                   )}
                   {product.brand && (
@@ -120,7 +121,7 @@ export default async function ProductPage({ params }: PageProps) {
                   lineHeight: 1.2,
                   marginBottom: '0.75rem',
                 }}>
-                  {product.name}
+                  {stripEmojis(product.name)}
                 </h1>
 
                 {/* Price */}
@@ -154,8 +155,9 @@ export default async function ProductPage({ params }: PageProps) {
                   color: 'var(--uma-taupe)',
                   lineHeight: 1.8,
                   marginBottom: '1.5rem',
+                  whiteSpace: 'pre-line'
                 }}>
-                  {product.description}
+                  {stripEmojis(product.description)}
                 </p>
 
                 {/* Benefits */}
@@ -169,7 +171,7 @@ export default async function ProductPage({ params }: PageProps) {
                     </p>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                       {product.benefits.map(b => (
-                        <span key={b} className="benefit-chip">{b}</span>
+                        <span key={b} className="benefit-chip">{stripEmojis(b)}</span>
                       ))}
                     </div>
                   </div>
@@ -198,7 +200,7 @@ export default async function ProductPage({ params }: PageProps) {
                 {product.tags.length > 0 && (
                   <div style={{ marginBottom: '2rem', display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
                     {product.tags.map(tag => (
-                      <span key={tag} className="tag-badge">#{tag}</span>
+                      <span key={tag} className="tag-badge">#{stripEmojis(tag)}</span>
                     ))}
                   </div>
                 )}
@@ -223,9 +225,9 @@ export default async function ProductPage({ params }: PageProps) {
 
                 {/* Back link */}
                 <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
-                  <Link href="/catalogo" style={{
+                  <Link href="/catalogo" className="link-editorial" style={{
                     fontSize: '0.8rem', color: 'var(--uma-taupe)', textDecoration: 'none',
-                    transition: 'color 0.2s', letterSpacing: '0.04em',
+                    letterSpacing: '0.04em',
                   }}>
                     ← Volver al catálogo
                   </Link>
@@ -258,7 +260,7 @@ export default async function ProductPage({ params }: PageProps) {
                         <Image src={p.image_url} alt={p.name} width={400} height={400} className="product-card__img" style={{ objectFit: 'cover', objectPosition: pPosition, width: '100%', height: '100%' }} />
                       </div>
                       <div className="product-card__body">
-                        <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '0.95rem', color: 'var(--uma-cacao)', marginBottom: '0.4rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{p.name}</h3>
+                        <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '0.95rem', color: 'var(--uma-cacao)', marginBottom: '0.4rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{stripEmojis(p.name)}</h3>
                         <span style={{ fontFamily: 'var(--font-heading)', fontSize: '1rem', fontWeight: 500, color: 'var(--uma-cacao)' }}>{formatPrice(p.price)}</span>
                       </div>
                     </article>

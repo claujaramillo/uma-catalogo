@@ -13,8 +13,8 @@ export default function FeaturedSection({ products }: FeaturedSectionProps) {
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
           <p style={{
-            fontFamily: 'var(--font-body)', fontSize: '0.72rem', fontWeight: 700,
-            letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--uma-arcilla)',
+            fontFamily: 'var(--font-body)', fontSize: '0.75rem', fontWeight: 500,
+            letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--uma-taupe)',
             marginBottom: '0.75rem',
           }}>
             Selección especial
@@ -28,7 +28,7 @@ export default function FeaturedSection({ products }: FeaturedSectionProps) {
           </h2>
           <p style={{
             fontFamily: 'var(--font-body)', fontSize: '1rem',
-            color: 'var(--uma-taupe)', maxWidth: '480px', margin: '0 auto',
+            color: 'var(--uma-taupe)', maxWidth: '480px', margin: '0 auto', lineHeight: 1.6,
           }}>
             Una cuidadosa selección de los productos que más amamos y recomendamos.
           </p>

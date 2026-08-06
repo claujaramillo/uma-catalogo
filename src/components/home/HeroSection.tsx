@@ -3,6 +3,7 @@ import { getSetting } from '@/lib/db';
 
 export default async function HeroSection() {
   const bgImage = await getSetting('home_hero_image', '/hero_uma2.jpg');
+  const focalPoint = await getSetting('home_hero_focal', '50% 50%');
   return (
     <section
       style={{
@@ -20,13 +21,13 @@ export default async function HeroSection() {
         position: 'absolute', inset: 0,
         backgroundImage: `url(${bgImage})`,
         backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        backgroundPosition: focalPoint,
       }} />
 
       {/* Subtle dark gradient overlay for text readability */}
       <div style={{
         position: 'absolute', inset: 0,
-        background: 'linear-gradient(to bottom, rgba(58,40,29,0.15) 0%, rgba(58,40,29,0.4) 40%, rgba(58,40,29,0.85) 100%)',
+        background: 'linear-gradient(to bottom, rgba(58,36,34,0.1) 0%, rgba(58,36,34,0.4) 40%, rgba(58,36,34,0.9) 100%)',
       }} />
 
 
@@ -40,11 +41,11 @@ export default async function HeroSection() {
           className="animate-fadeInUp delay-100"
           style={{
             fontFamily: 'var(--font-body)',
-            fontSize: '0.75rem',
-            fontWeight: 600,
-            letterSpacing: '0.2em',
+            fontSize: '0.8rem',
+            fontWeight: 400,
+            letterSpacing: '0.25em',
             textTransform: 'uppercase',
-            color: 'var(--uma-ambar)',
+            color: 'var(--uma-miel)',
             marginBottom: '1.2rem',
           }}
         >
@@ -66,7 +67,7 @@ export default async function HeroSection() {
           }}
         >
           Lo que le das a tu cuerpo,<br />
-          <em style={{ color: 'var(--uma-ambar)', fontStyle: 'italic', fontWeight: 400 }}>se lo das al mundo.</em>
+          <em style={{ color: 'var(--uma-miel)', fontStyle: 'italic', fontWeight: 400 }}>se lo das al mundo.</em>
         </h1>
 
         {/* Subtitle */}
@@ -74,9 +75,9 @@ export default async function HeroSection() {
           className="animate-fadeInUp delay-300"
           style={{
             fontFamily: 'var(--font-body)',
-            fontSize: 'clamp(1rem, 2vw, 1.15rem)',
-            color: 'rgba(250,245,236,0.75)',
-            maxWidth: '520px',
+            fontSize: 'clamp(1rem, 2vw, 1.2rem)',
+            color: 'rgba(252,251,248,0.85)',
+            maxWidth: '560px',
             margin: '0 auto 2.5rem',
             lineHeight: 1.7,
           }}
@@ -91,9 +92,10 @@ export default async function HeroSection() {
           </Link>
           <Link
             href="#destacados"
+            className="link-editorial"
             style={{
               display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
-              color: 'rgba(250,245,236,0.8)', fontFamily: 'var(--font-body)',
+              color: 'rgba(252,251,248,0.9)', fontFamily: 'var(--font-body)',
               fontSize: '0.85rem', fontWeight: 500, letterSpacing: '0.04em',
               textDecoration: 'none', transition: 'color 0.2s',
             }}
@@ -106,7 +108,7 @@ export default async function HeroSection() {
         <div style={{ marginTop: '4rem', opacity: 0.5 }}>
           <div style={{
             width: '1px', height: '50px',
-            background: 'linear-gradient(to bottom, var(--uma-ambar), transparent)',
+            background: 'linear-gradient(to bottom, var(--uma-miel), transparent)',
             margin: '0 auto',
             animation: 'pulse 2s infinite',
           }} />
