@@ -3,6 +3,8 @@ import { put } from '@vercel/blob';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import Image from 'next/image';
+import FocalPointEditor from '@/components/admin/FocalPointEditor';
+import { Product } from '@/types';
 
 export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -18,7 +20,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
     'use server';
     const { id } = await params;
     
-    const data = {
+    const data: Partial<Product> = {
       name: formData.get('name') as string,
       price: parseFloat(formData.get('price') as string),
       short_desc: formData.get('short_desc') as string,
@@ -26,6 +28,9 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
       is_available: formData.get('is_available') === 'on',
       image_url: product!.image_url,
     };
+
+    const pos = formData.get('image_position') as string;
+    if (pos) data.image_position = pos;
 
     // Handle image upload if a file was selected
     const imageFile = formData.get('image') as File;
@@ -88,10 +93,12 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
           <div style={{ flex: '0 0 300px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <label style={labelStyle}>Foto Actual</label>
             <div style={{ width: '100%', aspectRatio: '3/4', position: 'relative', background: 'var(--uma-crema)', borderRadius: '4px', overflow: 'hidden' }}>
-              <Image src={product.image_url} alt={product.name} fill style={{ objectFit: 'cover' }} />
+              <Image src={product.image_url} alt={product.name} fill style={{ objectFit: 'cover', objectPosition: product.image_position || '50% 50%' }} />
             </div>
             
-            <label style={labelStyle}>Cambiar Foto (Alta Resolución)</label>
+            <FocalPointEditor imageUrl={product.image_url} initialPosition={product.image_position} />
+            
+            <label style={{...labelStyle, marginTop: '1rem'}}>Cambiar Foto (Alta Resolución)</label>
             <input type="file" name="image" accept="image/jpeg, image/png, image/webp" style={{ fontSize: '0.8rem' }} />
             
             {!hasBlob && (

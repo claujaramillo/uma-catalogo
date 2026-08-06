@@ -45,11 +45,19 @@ export async function initDb() {
         price DECIMAL(10,2) NOT NULL,
         price_label VARCHAR(100),
         image_url TEXT NOT NULL,
+        image_position VARCHAR(50) DEFAULT '50% 50%',
         is_available BOOLEAN DEFAULT true,
         is_featured BOOLEAN DEFAULT false,
         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
       );
     `;
+
+    // Intentar agregar la columna si la tabla ya existía de antes
+    try {
+      await sql`ALTER TABLE products ADD COLUMN image_position VARCHAR(50) DEFAULT '50% 50%';`;
+    } catch {
+      // Ignorar si la columna ya existe
+    }
 
     // Insertar usuario admin por defecto si no existe ninguno
     const { rows: users } = await sql`SELECT COUNT(*) FROM users;`;
@@ -76,10 +84,10 @@ export async function initDb() {
         await sql`
           INSERT INTO products (
             slug, name, brand, category_id, short_desc, description, ingredients,
-            benefits, tags, price, price_label, image_url, is_available, is_featured
+            benefits, tags, price, price_label, image_url, image_position, is_available, is_featured
           ) VALUES (
             ${p.slug}, ${p.name}, ${p.brand || null}, ${p.category_id}, ${p.short_desc}, ${p.description}, ${p.ingredients || null},
-            ${`{${p.benefits.join(',')}}`}, ${`{${p.tags.join(',')}}`}, ${p.price}, ${p.price_label || null}, ${p.image_url}, ${p.is_available}, ${p.is_featured || false}
+            ${`{${p.benefits.join(',')}}`}, ${`{${p.tags.join(',')}}`}, ${p.price}, ${p.price_label || null}, ${p.image_url}, ${p.image_position || '50% 50%'}, ${p.is_available}, ${p.is_featured || false}
           );
         `;
       }
@@ -250,12 +258,40 @@ export async function updateProduct(id: string, data: Partial<Product>): Promise
         description = COALESCE(${data.description}, description),
         is_available = COALESCE(${data.is_available}, is_available),
         is_featured = COALESCE(${data.is_featured}, is_featured),
-        image_url = COALESCE(${data.image_url}, image_url)
+        image_url = COALESCE(${data.image_url}, image_url),
+        image_position = COALESCE(${data.image_position}, image_position)
       WHERE id = ${parseInt(id)};
     `;
     return true;
   } catch (e) {
     console.error('Error actualizando producto:', e);
     return false;
+  }
+}
+
+export async function createProduct(data: Omit<Product, 'id'>): Promise<string | null> {
+  if (!hasDb) {
+    console.warn('Postgres no está configurado. No se persistirá en DB.');
+    return null;
+  }
+
+  try {
+    const { rows } = await sql`
+      INSERT INTO products (
+        slug, name, brand, category_id, short_desc, description, ingredients,
+        benefits, tags, price, price_label, image_url, image_position, is_available, is_featured
+      ) VALUES (
+        ${data.slug}, ${data.name}, ${data.brand || null}, ${data.category_id}, ${data.short_desc}, 
+        ${data.description}, ${data.ingredients || null},
+        ${data.benefits as unknown as string}, 
+        ${data.tags as unknown as string}, 
+        ${data.price}, ${data.price_label || null}, ${data.image_url}, 
+        ${data.image_position || '50% 50%'}, ${data.is_available}, ${data.is_featured}
+      ) RETURNING id;
+    `;
+    return rows[0].id.toString();
+  } catch (e) {
+    console.error('Error creando producto:', e);
+    return null;
   }
 }
