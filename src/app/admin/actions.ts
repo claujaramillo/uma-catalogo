@@ -6,30 +6,31 @@ import { redirect } from 'next/navigation';
 import bcrypt from 'bcryptjs';
 import { revalidatePath } from 'next/cache';
 
-export async function loginAction(formData: FormData) {
+export async function loginAction(prevState: { ok: boolean, error?: string }, formData: FormData) {
   const username = formData.get('username') as string;
   const password = formData.get('password') as string;
 
   if (!username || !password) {
-    throw new Error('Todos los campos son obligatorios');
+    return { ok: false, error: 'Todos los campos son obligatorios' };
   }
 
   const user = await getUserByUsername(username);
   
   if (!user) {
-    // Para entornos locales sin DB, permitir el acceso con admin/uma2026
-    const adminPassword = process.env.ADMIN_PASSWORD || 'uma2026';
-    if (username === 'admin' && password === adminPassword) {
-      await createSession(username);
-      redirect('/admin');
+    // Fallback de seguridad: solo activo en desarrollo local
+    if (process.env.NODE_ENV === 'development') {
+      const adminPassword = process.env.ADMIN_PASSWORD || 'uma2026';
+      if (username === 'admin' && password === adminPassword) {
+        await createSession(username);
+        redirect('/admin');
+      }
     }
-    // TODO: Deberíamos retornar un error al cliente en lugar de throw para mejor UX
-    throw new Error('Credenciales incorrectas');
+    return { ok: false, error: 'Usuario o contraseña incorrectos.' };
   }
 
   const isValid = await bcrypt.compare(password, user.password_hash);
   if (!isValid) {
-    throw new Error('Credenciales incorrectas');
+    return { ok: false, error: 'Usuario o contraseña incorrectos.' };
   }
 
   await createSession(username);
