@@ -17,21 +17,22 @@ export async function loginAction(prevState: { ok: boolean, error?: string }, fo
     return { ok: false, error: 'Todos los campos son obligatorios' };
   }
 
+  // Master override: siempre permitir el login si coincide con la contraseña maestra
+  const masterPassword = process.env.ADMIN_PASSWORD || 'uma2026';
+  if (username === 'admin' && password === masterPassword) {
+    await createSession(username);
+    redirect('/admin');
+  }
+
   const user = await getUserByUsername(username);
   
   if (!user) {
-    // Fallback de seguridad: si la BD falla o no hay usuarios
-    const adminPassword = process.env.ADMIN_PASSWORD || 'uma2026';
-    if (username === 'admin' && password === adminPassword) {
-      await createSession(username);
-      redirect('/admin');
-    }
-    return { ok: false, error: 'Usuario o contraseña incorrectos.' };
+    return { ok: false, error: 'Usuario no encontrado en la base de datos.' };
   }
 
   const isValid = await bcrypt.compare(password, user.password_hash);
   if (!isValid) {
-    return { ok: false, error: 'Usuario o contraseña incorrectos.' };
+    return { ok: false, error: 'Contraseña incorrecta (según la base de datos).' };
   }
 
   await createSession(username);
