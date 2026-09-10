@@ -20,6 +20,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     fontWeight: 500,
   });
 
+  if (pathname === '/admin/login') {
+    return <>{children}</>;
+  }
+
   return (
     <>
       <style dangerouslySetInnerHTML={{__html: `

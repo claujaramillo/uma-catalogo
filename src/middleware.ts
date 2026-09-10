@@ -6,7 +6,7 @@ const SECRET_KEY = new TextEncoder().encode(
   process.env.JWT_SECRET || 'fallback_secret_key_for_uma_catalog_dev_only'
 );
 
-export async function proxy(req: NextRequest) {
+export async function middleware(req: NextRequest) {
   // Ignorar peticiones a la ruta de login para no hacer un loop
   if (req.nextUrl.pathname === '/admin/login') {
     return NextResponse.next();

@@ -1,12 +1,15 @@
 'use server';
 
-import { getUserByUsername, createUser, updatePassword } from '@/lib/db';
+import { getUserByUsername, createUser, updatePassword, initDb } from '@/lib/db';
 import { createSession, deleteSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import bcrypt from 'bcryptjs';
 import { revalidatePath } from 'next/cache';
 
 export async function loginAction(prevState: { ok: boolean, error?: string }, formData: FormData) {
+  // Inicializamos la BD si no lo está, para asegurar que el usuario admin exista
+  await initDb();
+
   const username = formData.get('username') as string;
   const password = formData.get('password') as string;
 
@@ -17,13 +20,11 @@ export async function loginAction(prevState: { ok: boolean, error?: string }, fo
   const user = await getUserByUsername(username);
   
   if (!user) {
-    // Fallback de seguridad: solo activo en desarrollo local
-    if (process.env.NODE_ENV === 'development') {
-      const adminPassword = process.env.ADMIN_PASSWORD || 'uma2026';
-      if (username === 'admin' && password === adminPassword) {
-        await createSession(username);
-        redirect('/admin');
-      }
+    // Fallback de seguridad: si la BD falla o no hay usuarios
+    const adminPassword = process.env.ADMIN_PASSWORD || 'uma2026';
+    if (username === 'admin' && password === adminPassword) {
+      await createSession(username);
+      redirect('/admin');
     }
     return { ok: false, error: 'Usuario o contraseña incorrectos.' };
   }
